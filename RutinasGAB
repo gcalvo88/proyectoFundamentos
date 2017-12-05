@@ -1,0 +1,175 @@
+package conecta4;
+
+public class RutinasConect4 {
+    // se declaran 2 arrays
+    // el primero es el espacio del juego,
+    // el otro es un contador para ir saber en que filas se han almacenado datos
+    private static char[][] matriz = new char[6][7];
+    private static int[] ifilas = new int[7];
+
+    public static char turnoJug = 'R';
+
+    public static int totalFichasJugador1;
+    public static int totalFichasJugador2;
+    public static int fichasJugador1 = 0; // contador de fichas del jugador 1
+    public static int fichasJugador2 = 0; //contador de fichas del jugador 2
+
+    public static void iniciarJuego() {
+
+        // esta rutina llena el arreglo con rayitas! para que sea visible!
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                matriz[i][j] = '-';
+
+            }
+        }
+        for (int k = 0; k < ifilas.length; k++) {
+            ifilas[k] = 5;
+
+        }
+        totalFichasJugador1 = 21;
+        totalFichasJugador2 = 21;
+        fichasJugador1 = 0;
+        fichasJugador2 = 0;
+    }
+
+    public static void registroDato(int pc) {
+        char jugador = alternarJugador();
+        int fila;
+
+        fila = ifilas[pc];
+        matriz[fila][pc] = jugador;
+        fila--;
+        ifilas[pc] = fila;
+
+        if (jugador == 'A') {
+            fichasJugador1++;
+        } else {
+            fichasJugador2++;
+        }
+
+    }
+
+    public static String mostrarTablero(int i) {
+        String datos = "  ";
+        for (int x = 0; x < matriz[0].length; x++) {
+            datos += matriz[i][x] + " ";
+        }
+        return datos;
+    }
+
+    public static char alternarJugador() {
+
+        //esta rutina lo que hace es ir cambiando de jugador
+        if (turnoJug == 'R') {
+            turnoJug = 'A';
+        } else {
+            turnoJug = 'A';
+            turnoJug = 'R';
+        }
+        return turnoJug;
+    }
+
+    public static boolean validarColumna(int pcolumna) {
+
+        // Esta rutina lo que hace es validar que uno no meta numeros de columna equivocados
+        boolean valida = true;
+
+        if (pcolumna < 1 || pcolumna > 7) {
+            valida = false;
+        }
+        if (ifilas[pcolumna-1] == -1) {
+            valida = false;
+        }
+        return valida;
+    }
+
+    public static boolean calculoGanador() {
+        boolean ganador = false;
+
+        // primero revisa si gana horizontalmente
+        for (int i = 0; i < (matriz.length); i++) {
+            for (int j = 0; j < (matriz[0].length - 3); j++) {
+                if (matriz[i][j] != '-'
+                        && matriz[i][j] == matriz[i][j + 1]
+                        && matriz[i][j] == matriz[i][j + 2]
+                        && matriz[i][j] == matriz[i][j + 3]) {
+                    ganador = true;
+                }
+            }
+
+        }
+
+        // a continuacion revisa si gano verticalmente
+        for (int k = 0; k < (matriz.length - 3); k++) {
+            for (int m = 0; m < (matriz[0].length); m++) {
+                if (matriz[k][m] != '-'
+                        && matriz[k][m] == matriz[k + 1][m]
+                        && matriz[k][m] == matriz[k + 2][m]
+                        && matriz[k][m] == matriz[k + 3][m]) {
+                    ganador = true;
+                }
+            }
+
+        }
+
+        // a continuacion revisa si gano diagonalmente en una direccion
+        for (int n = 0; n < (matriz.length - 3); n++) {
+            for (int p = 0; p < (matriz[0].length - 3); p++) {
+                if (matriz[n][p] != '-'
+                        && matriz[n][p] == matriz[n + 1][p + 1]
+                        && matriz[n][p] == matriz[n + 2][p + 2]
+                        && matriz[n][p] == matriz[n + 3][p + 3]) {
+                    ganador = true;
+                }
+            }
+
+        }
+
+        // a continuacion revisa si gano diagonalmente en la otra direccion
+        for (int q = 3; q < matriz.length; q++) {
+            for (int r = 0; r < (matriz[0].length - 3); r++) {
+                if (matriz[q][r] != '-'
+                        && matriz[q][r] == matriz[q - 1][r + 1]
+                        && matriz[q][r] == matriz[q - 2][r + 2]
+                        && matriz[q][r] == matriz[q - 3][r + 3]) {
+                    ganador = true;
+                }
+            }
+
+        }
+
+        return ganador;
+
+    }
+
+    public static char turnoJugador() {
+        return turnoJug;
+    }
+
+    public static boolean Retirarse() {
+
+        boolean salir = true;
+        return salir;
+
+    }
+
+    public static int cantidadFichasJ1() {
+
+        int fichas;
+
+        fichas = totalFichasJugador1 - fichasJugador1;
+
+        return fichas;
+    }
+
+    public static int cantidadFichasJ2() {
+
+        int fichas;
+
+        fichas = totalFichasJugador2 - fichasJugador2;
+
+        return fichas;
+    }
+
+}
