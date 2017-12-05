@@ -1,0 +1,145 @@
+package conecta4;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.IOException;
+
+public class UIConect4 {
+
+    static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    static PrintStream out = System.out;
+
+    public static void main(String[] args) throws IOException {
+
+        int opc;                     //almacena la opcion que escoge el usuario del menu
+        boolean noSalir = true;
+        RutinasConect4.iniciarJuego();     //comienza el juego y grafica los valores encontrados
+        do {
+            menu();
+            opc = leerOpcion();
+            noSalir = ejecutarAccion(opc);
+        } while (noSalir);
+
+    }
+
+    public static void menu() throws IOException {
+
+        if (RutinasConect4.turnoJugador() == 'R') {
+            out.println("Turno del jugador No.1 (A)");
+        } else {
+            out.println("Turno del jugador No.2 (B)");
+        }
+        out.println("1.  Jugar");
+        out.println("2.  Retirarse");
+        out.println("3.  Reiniciar Juego");
+        out.println("---------------------------------");
+    }
+
+    static int leerOpcion() throws java.io.IOException {
+
+        int opcion;
+
+        opcion = Integer.parseInt(in.readLine());
+        out.println();
+
+        return opcion;
+    }
+
+    static boolean ejecutarAccion(int popcion) throws java.io.IOException {
+
+        boolean noSalir = true;
+
+        switch (popcion) {
+
+            case 1:
+
+                dibujarTablero();           // dibuja el tablero inicialmente
+                noSalir = jugar();
+                break;
+
+            case 2:
+
+                noSalir = false;
+
+                if (RutinasConect4.turnoJugador() == 'R') {
+                    out.println("El jugador No.1 ha perdido!");
+                } else {
+                    out.println("El jugador No.2 ha perdido!");
+                }
+
+                break;
+
+            case 3:
+                RutinasConect4.iniciarJuego();     //comienza el juego y grafica los valores encontrados
+                break;
+
+            default:
+                out.println("opcion invalida");
+                break;
+
+        }
+
+        return noSalir;
+
+    }
+
+    static boolean jugar() throws IOException {
+        boolean noSalir = true;
+        if (RutinasConect4.turnoJugador() == 'R') {
+            out.println("turno del jugador No.1 (A)");
+        } else {
+            out.println("turno del jugador No.2 (R)");
+        }
+        ingresarDato();
+        if (RutinasConect4.calculoGanador()) {
+            if (RutinasConect4.turnoJugador() == 'A') {
+                out.println("El jugador No. 1 gano!!!!");
+                noSalir = false;
+            } else {
+                out.println("El jugador No. 2 gano!!!!");
+                noSalir = false;
+            }
+        } else {
+            out.println("Al jugador No.1 (A) le quedan " + RutinasConect4.cantidadFichasJ1() + " fichas");
+            out.println("Al jugador No.2 (R) le quedan " + RutinasConect4.cantidadFichasJ2() + " fichas");
+            out.println("---------------------------------");
+        }
+
+        return noSalir;
+    }
+
+    static void ingresarDato() throws IOException {
+        int c;  //almacena la columna en la que el jugador quiere jugar
+
+        do {
+            out.println("en que columna desea jugar");
+
+            c = Integer.parseInt(in.readLine());
+
+            if (c == 0) {
+
+            }
+            if (RutinasConect4.validarColumna(c)) {                //valida si la columna se encuentra entre 1 y 7!
+
+                RutinasConect4.registroDato(c - 1); //le resto -1 porque el array se cuenta desde 0
+
+                dibujarTablero();
+            } else {
+                out.println("Opcion invalida");
+                out.println("Ingrese un numero de columna, de 1 hasta 7! ");
+            }
+        } while (RutinasConect4.validarColumna(c) == false);
+
+    }
+
+    static void dibujarTablero() {
+        out.println("  1 2 3 4 5 6 7 ");
+
+        for (int i = 0; i < 6; i++) {
+
+            out.println(RutinasConect4.mostrarTablero(i));
+        }
+    }
+
+}
